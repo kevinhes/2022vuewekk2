@@ -19,6 +19,7 @@ loginBtn.addEventListener('click', e => {
         let {token, expired} = res.data
         console.log(token,expired);
         document.cookie = `hextoken=${token}; expires=${new Date(expired)}`
+        window.location = './backstage.html'
       })
       .catch(error => {
         console.dir(error);
