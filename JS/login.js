@@ -13,7 +13,7 @@ loginBtn.addEventListener('click', e => {
       "username": userName.value,
       "password": password.value
     }
-    axios.post(`https://vue3-course-api.hexschool.io/v2/admin/signin`,user)
+    axios.post(`${api_url}/v2/admin/signin`,user)
       .then(res => {
         console.log(res);
         let {token, expired} = res.data
