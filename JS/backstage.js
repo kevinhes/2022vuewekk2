@@ -10,12 +10,8 @@ const app = Vue.createApp({
     },
     created() {
         axios.defaults.headers.common['Authorization'] = this.token;
-        console.log(this.token);
         this.checkLoginStatus()
-        axios.get(`${this.api_url}/v2/api/${this.api_path}/admin/products`)
-            .then(res => {
-                this.productsData = res.data.products
-            })
+        this.getProducstsList()
     },
     methods: {
         checkLoginStatus() {
@@ -26,6 +22,24 @@ const app = Vue.createApp({
         },
         checkProduct(item) {
             this.tempProduct = item
+        },
+        deleteProduct(item) {
+            let id = item.id
+            console.log(id);
+            axios.delete(`${this.api_url}/v2/api/${this.api_path}/admin/product/${id}`)
+                .then(res => {
+                    console.log(res);
+                    this.getProducstsList()
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
+        getProducstsList() {
+            axios.get(`${this.api_url}/v2/api/${this.api_path}/admin/products`)
+            .then(res => {
+                this.productsData = res.data.products
+            })
         }
     },
 })
