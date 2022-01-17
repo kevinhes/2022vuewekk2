@@ -20,15 +20,15 @@
               <form id="form" class="form-signin">
                 <div class="form-floating mb-3">
                   <input type="email" class="form-control" id="username"
-                    placeholder="name@example.com" required autofocus>
+                    v-model="user.username" placeholder="name@example.com" required autofocus>
                   <label for="username">Email address</label>
                 </div>
                 <div class="form-floating">
                   <input type="password" class="form-control" id="password"
-                    placeholder="Password" required>
+                  v-model="user.password"  placeholder="Password" required>
                   <label for="password">Password</label>
                 </div>
-                <button class="btn btn-lg btn-primary w-100 mt-3" type="submit">
+                <button class="btn btn-lg btn-primary w-100 mt-3" type="button" @click="login">
                   登入
                 </button>
               </form>
@@ -39,7 +39,8 @@
           </p>
         </div>
       </div>
-   
+      
+      <script src="https://unpkg.com/vue@next"></script>
       <script src='https://cdnjs.cloudflare.com/ajax/libs/axios/0.9.1/axios.min.js'
         integrity='sha512-Xk3wWei2TGrsh9kDSBKUMIjw/86sLUvhtnv9f7fOuIwhhiUTKz8szkWkzHthrM5Bb3Bu9idSzkxOrkzhcneuiw=='
         crossorigin='anonymous'></script>
