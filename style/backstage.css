@@ -4,3 +4,14 @@
     object-fit: cover;
     margin-right: 24px;
 }
+
+.card-img-top {
+    height: 300px;
+    object-fit: cover;
+}
+
+.modal-img{
+    height: 150px;
+    width: 150px;
+    object-fit: cover;
+}

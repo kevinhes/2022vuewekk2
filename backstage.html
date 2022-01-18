@@ -11,90 +11,67 @@
   </head>
 
   <body>
-    <div class="container">
-      <div id="app" class="container">
-        <div class="text-end pt-3">
-            <input type="button" value="登入測試" class="checkLogin btn btn-outline-primary">
-        </div>
-        <table class="table mt-4">
-          <thead>
-            <tr>
-              <th>產品名稱</th>
-              <th width="120">
-                原價
-              </th>
-              <th width="120">
-                售價
-              </th>
-              <th width="150">
-                是否啟用
-              </th>
-              <th width="120">
-                商品細節
-              </th>
-              <th width="120">
-                刪除
-              </th>
-            </tr>
-          </thead>
-          <tbody id="productList">
-            <tr v-for="(item, index) in productsData" :key="item.id">
-              <td>{{item.title}}</td>
-              <td width="120">
-                {{item.origin_price}}
-              </td>
-              <td width="120">
-                {{item.price}}
-              </td>
-              <td width="100">
-                <span class="">{{item.is_enabled? '已啟動':'未啟動'}}</span>
-              </td>
-              <td width="120">
-                <button class="btn btn-sm btn-outline-primary" @click="checkProduct(item)"
-                 data-bs-toggle="modal" data-bs-target="#exampleModal">查看</button
-              </td>
-              <td width="120">
-                <button type="button" class="btn btn-sm btn-outline-danger move deleteBtn"
-                @click="deleteProduct(item)" data-action="remove" :data-id="item.id"> 刪除 </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p>目前有 <span id="productCount">{{productsData.length}}</span> 項產品</p>
-        <!-- modal start -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div id="app">
+      <div class="container">
+          <div class="d-flex py-3 border-bottom mb-3 justify-content-between">
+            <h1 class="mb-0">產品列表</h1>
+            <input type="button" value="登入測試" class="btn btn-outline-danger" @click="checkLogin">
+          </div>
+          <ul class="row list-unstyled d-flex">
+              <li class="col-4" v-for="(item, index) in productsData" :key="index">
+                  <div class="card">
+                      <img :src="item.imageUrl" class="card-img-top" :alt="item.title">
+                      <div class="card-body">
+                          <h5 class="card-title">{{item.title}}</h5>
+                          <p class="card-text">{{item.description}}</p>
+                          <div class="d-flex justify-content-between align-items-center">
+                              <p class="card-text mb-0">原價 <span>{{item.origin_price}} / </span> <span>特價{{item.price}} 元</span></p>
+                              <div class="d-flex">
+                                  <span class="btn btn-outline-success btn-sm me-3">{{item.is_enabled?"啟用" : "未啟用"}}</span>
+                                  <input type="button" value="查看細節" class="btn btn-primary btn-sm d-block" @click="checkProduct(item)"
+                                  data-bs-toggle="modal" data-bs-target="#exampleModal">    
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </li>
+          </ul>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"> <span class="align-middle me-3">{{tempProduct.title}}</span><span class="btn btn-sm btn-outline-success align-middle">{{tempProduct.category}}</span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
+              <div class="modal-content">
               <div class="modal-body">
-                <div class="row mb-3 pb-3 border-bottom">
-                  <div class="col-6">
-                      <img :src="tempProduct.imageUrl" alt="" class="img-fluid">
-                  </div>
-                  <div class="col-6">
-                    <p>商品內容：{{tempProduct.content}}</p>
-                    <p>商品敘述：{{tempProduct.description}}</p>
-                    <p>剩餘數量：{{tempProduct.num}}/{{tempProduct.unit}}</p>
-                  </div>
-                </div>
-                  <div class="d-flex flex-wrap">
-                    <template v-for="(item, index) in tempProduct.imagesUrl" :key="index">
-                      <img  :src="item" v-if="item != ''" alt="" class="products-img">
-                    </template>
+                  <div class="container-fluid">
+                      <div class="row">
+                          <div class="col-6">
+                            <img :src="tempProduct.imageUrl" :alt="tempProduct.title" :title="tempProduct.title" class="img-fluid">
+                          </div>
+                          <div class="col-6">
+                              <h4 class="mb-4">{{tempProduct.title}}<span class="bg-primary text-white fs-6 py-1 px-2 rounded-3 ms-3">{{tempProduct.category}}</span></h4>
+                              <p>{{tempProduct.description}}</p>
+                              <p>{{tempProduct.content}}</p>
+                              <p class="mb-4">原價 <span>{{tempProduct.origin_price}} 元</span> / <span>特價{{tempProduct.price}} 元</span></p>
+                              <p>剩餘數量：{{tempProduct.num}}{{tempProduct.unit}}</p>
+                              <div class="d-flex flex-wrap">
+                                  <template v-for="(item, index) in tempProduct.imagesUrl" :key="index">
+                                      <div class="me-3">
+                                          <img :src="item" :alt="tempProduct.title" class="modal-img" v-if="item != ''">
+                                      </div>
+                                  </template>
+                              </div>
+                          </div>
+                      </div>
                   </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @click="closeModal">Close</button>
               </div>
-            </div>
+              </div>
           </div>
-        </div>
-        <!-- modal end -->
       </div>
-    </div>
+  </div>
+
     <script src="https://unpkg.com/vue@next"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
      crossorigin="anonymous"></script>

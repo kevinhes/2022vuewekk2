@@ -20,6 +20,17 @@ const app = Vue.createApp({
                 window.location = './login.html'
             }
         },
+        checkLogin() {
+            axios.post(`${this.api_url}/v2/api/user/check`)
+                .then(res => {
+                    if(res.data.success === true){
+                        alert('您正處於登入狀態')
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+        },
         checkProduct(item) {
             this.tempProduct = item
         },
@@ -40,6 +51,20 @@ const app = Vue.createApp({
             .then(res => {
                 this.productsData = res.data.products
             })
+            .catch(error => {
+                console.log(error.response);
+            })
+        },
+        logout() {
+            axios.post(`${this.api_url}/v2/logout`)
+                .then(res => {
+                    docCookies.removeItem('hextoken')
+                    alert('您已成功登出')
+                    window.location = './login.html'
+                })
+                .catch (error => {
+                    console.log(error.response)
+                })
         }
     },
 })
